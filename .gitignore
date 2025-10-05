@@ -19,3 +19,13 @@ Thumbs.db
 # secrets
 .env
 *.env
+
+# secrets & deps
+.env
+*.env
+backend/.env
+node_modules/
+**/__pycache__/
+.venv/
+backend/.venv/
+venv/
