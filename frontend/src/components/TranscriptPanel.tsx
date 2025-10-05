@@ -6,9 +6,10 @@ type Props = {
   turns: Turn[];
   sessionId: string;
   onPlayAudio: (url: string) => void;
+  onReset: () => void;
 };
 
-export function TranscriptPanel({ turns, sessionId, onPlayAudio }: Props) {
+export function TranscriptPanel({ turns, sessionId, onPlayAudio, onReset }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,17 +23,27 @@ export function TranscriptPanel({ turns, sessionId, onPlayAudio }: Props) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-bg border-l border-muted/20">
-      <div className="sticky top-0 z-10 px-4 py-3 border-b border-muted/20 bg-bg/80 backdrop-blur-sm flex items-center justify-between">
+    <div className="flex flex-col h-full bg-bg border-l border-border/20">
+      <div className="sticky top-0 z-10 px-4 py-3 border-b border-border/20 bg-bg/80 backdrop-blur-sm flex items-center justify-between">
         <h2 className="text-lg font-semibold text-fg">Transcript</h2>
-        <button
-          onClick={handleDownload}
-          className="p-2 rounded-lg hover:bg-muted/10 transition-colors focus:outline-none focus:ring-2 focus:ring-orb-from/50"
-          aria-label="Download transcript"
-          title="Download transcript"
-        >
-          <Download className="w-4 h-4 text-muted" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownload}
+            className="p-2 rounded-lg hover:bg-muted/10 transition-colors focus:outline-none focus:ring-2 focus:ring-orb-from/50"
+            aria-label="Download transcript"
+            title="Download transcript"
+          >
+            <Download className="w-4 h-4 text-muted" />
+          </button>
+          <button
+            onClick={() => onReset()}
+            className="p-2 rounded-lg hover:bg-muted/10 transition-colors focus:outline-none focus:ring-2 focus:ring-orb-from/50 text-sm text-red-500"
+            aria-label="Reset conversation"
+            title="Reset conversation and clear memory"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">

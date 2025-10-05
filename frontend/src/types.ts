@@ -6,7 +6,7 @@ export type Turn = {
   ts: number;
 };
 
-export type Persona = 'methodical' | 'pragmatic' | 'ethical';
+export type Persona = 'socrates' | 'karen2.0' | 'professorlogic';
 
 export type UiState = 'idle' | 'listening' | 'thinking' | 'speaking';
 

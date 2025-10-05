@@ -17,7 +17,7 @@ export function getSessionId(): string {
 
 export function getStoredPersona(): Persona {
   const stored = localStorage.getItem(STORAGE_KEYS.PERSONA);
-  return (stored as Persona) || 'methodical';
+  return (stored as Persona) || 'socrates';
 }
 
 export function setStoredPersona(persona: Persona): void {
@@ -36,4 +36,9 @@ export function getStoredTranscript(): Turn[] {
 
 export function setStoredTranscript(transcript: Turn[]): void {
   localStorage.setItem(STORAGE_KEYS.TRANSCRIPT, JSON.stringify(transcript));
+}
+
+export function clearSession(): void {
+  localStorage.removeItem(STORAGE_KEYS.SESSION_ID);
+  localStorage.removeItem(STORAGE_KEYS.TRANSCRIPT);
 }

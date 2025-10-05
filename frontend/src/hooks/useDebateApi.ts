@@ -10,22 +10,38 @@ export interface DebatePayload {
 
 export async function respond(payload: DebatePayload): Promise<DebateResponse> {
   const apiBase = import.meta.env.VITE_API_BASE || '';
+  const url = `${apiBase}/api/rebuttal`;
+  console.log('🌐 API Request:', { url, apiBase, payload });
+  
   try {
-    const res = await fetch(`${apiBase}/api/rebuttal`, {
+    const requestBody = {
+      sessionId: payload.sessionId,
+      session_id: payload.sessionId,
+      stance: payload.message,
+      persona: payload.persona,
+      challenge: payload.challenge,
+    };
+    console.log('📤 Request body:', requestBody);
+    
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sessionId: payload.sessionId,
-        session_id: payload.sessionId,
-        stance: payload.message,
-        persona: payload.persona,
-        challenge: payload.challenge,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
-    if (!res.ok) throw new Error(`API ${res.status}`);
+    console.log('📥 Response status:', res.status, res.statusText);
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('❌ API error response:', errorText);
+      throw new Error(`API ${res.status}: ${errorText}`);
+    }
 
     const data = await res.json();
+    console.log('✅ API response data:', data);
+    // If backend returns a relative audio_url (e.g. /media/tts/...), prefix with VITE_API_BASE
+    if (data && data.audio_url && typeof data.audio_url === 'string' && data.audio_url.startsWith('/') && apiBase) {
+      data.audio_url = `${apiBase}${data.audio_url}`;
+    }
     return data as DebateResponse;
   } catch (err) {
     console.error('respond() failed:', err, 'VITE_API_BASE=', apiBase);

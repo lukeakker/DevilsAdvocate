@@ -6,7 +6,8 @@
   :root {
     --bg: #f8f9fb;
     --fg: #1f2430;
-    --muted: #98a2b3;
+    --muted: #6b7280;
+    --border: #000000;
     --orb-from: #7c4dff;
     --orb-to: #00e5ff;
   }
@@ -15,6 +16,7 @@
     --bg: #0b0b0c;
     --fg: #eaecee;
     --muted: #98a2b3;
+    --border: #98a2b3;
     --orb-from: #7c4dff;
     --orb-to: #00e5ff;
   }

@@ -7,6 +7,7 @@ export default {
         bg: 'var(--bg)',
         fg: 'var(--fg)',
         muted: 'var(--muted)',
+        border: 'var(--border)',
         'orb-from': 'var(--orb-from)',
         'orb-to': 'var(--orb-to)',
       },

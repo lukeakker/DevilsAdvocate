@@ -1,47 +1,21 @@
 import { useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
-
-function getSystemTheme(): 'light' | 'dark' {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-function getResolvedTheme(theme: Theme): 'light' | 'dark' {
-  return theme === 'system' ? getSystemTheme() : theme;
-}
+type Theme = 'light' | 'dark';
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
     const stored = localStorage.getItem('theme');
-    return (stored as Theme) || 'system';
+    return (stored as Theme) || 'light';
   });
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
-    const resolved = getResolvedTheme(theme);
-    document.documentElement.setAttribute('data-theme', resolved);
-  }, [theme]);
-
-  useEffect(() => {
-    if (theme !== 'system') return;
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = () => {
-      const resolved = getResolvedTheme(theme);
-      document.documentElement.setAttribute('data-theme', resolved);
-    };
-
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
   const cycleTheme = () => {
-    setTheme((curr) => {
-      if (curr === 'light') return 'dark';
-      if (curr === 'dark') return 'system';
-      return 'light';
-    });
+    setTheme((curr) => curr === 'light' ? 'dark' : 'light');
   };
 
-  return { theme, setTheme, cycleTheme, resolvedTheme: getResolvedTheme(theme) };
+  return { theme, setTheme, cycleTheme };
 }

@@ -25,22 +25,32 @@ export function useAudio() {
   }, []);
 
   const play = (url: string, onEnded?: () => void) => {
-    if (!audioRef.current) return;
+    console.log('🎵 useAudio.play() called with:', { url, hasOnEndedCallback: !!onEnded });
+    if (!audioRef.current) {
+      console.log('❌ audioRef.current is null');
+      return;
+    }
 
     if (currentUrl !== url) {
+      console.log('🔄 Setting new audio source:', url);
       audioRef.current.src = url;
       setCurrentUrl(url);
     }
 
     audioRef.current.play().then(() => {
+      console.log('▶️ Audio started playing');
       setIsPlaying(true);
       if (onEnded) {
+        console.log('🎧 Attaching onEnded callback');
         const handleEnd = () => {
+          console.log('🏁 Audio ended event fired - calling onEnded callback');
           onEnded();
           audioRef.current?.removeEventListener('ended', handleEnd);
         };
         audioRef.current?.addEventListener('ended', handleEnd);
       }
+    }).catch(err => {
+      console.error('❌ Audio play failed:', err);
     });
   };
 
